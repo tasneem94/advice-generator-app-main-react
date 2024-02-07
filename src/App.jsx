@@ -2,14 +2,13 @@ import "./App.css";
 import { Heading } from "./Heading";
 import { AdviceText } from "./AdviceText";
 import { Button } from "./Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [adviceNo, setAdviceNo] = useState(176);
-  const [adviceText, setAdviceText] = useState(
-    "Good things come to those who wait"
-  );
+  const [adviceNo, setAdviceNo] = useState(0);
+  const [adviceText, setAdviceText] = useState("");
   const url = "https://api.adviceslip.com/advice";
+
   const fetchNewAdvice = async () => {
     const response = await fetch(url);
     const data = await response.json();
@@ -17,6 +16,11 @@ function App() {
     setAdviceNo(data.slip.id);
     setAdviceText(data.slip.advice);
   };
+
+  useEffect(() => {
+    fetchNewAdvice();
+  }, []);
+
   return (
     <div className="container">
       <Heading adviceNo={adviceNo} />
